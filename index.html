@@ -77,39 +77,50 @@
                         this.subtotal = parseFloat(this.total) + 150;
                     },
                     addItems(id){
-                        console.log(id);
                         for (var i = 0; i < this.menus.length; i++){
                         // look for the entry with a matching `code` value
-                            if (this.menus[i].id == id){
-                                this.addedItems.push(this.menus[i]);
+                            if (this.menus[i].id == id){ 
+                                var valObj = this.addedItems.filter(function(elem){
+                                    if(elem.id == id) return elem.id;
+                                });
+                                if(valObj.length > 0){
+                                    for (var i = 0; i < this.addedItems.length; i++){
+                                        if (this.addedItems[i].id == id){
+                                            this.addedItems[i].quantity = parseInt(this.addedItems[i].quantity) + 1;
+                                            this.addedItems[i].total=this.addedItems[i].quantity * this.addedItems[i].price;
+                                            this.calculateTotal(this.addedItems[i].price);
+                                        }
+                                    }
+                                }
+                                else{
+                                    this.addedItems.push(this.menus[i]);
                                 //this.addedItems
-                                this.addedItems[this.addedItems.length - 1].quantity=1;
-                                this.addedItems[this.addedItems.length - 1].total=this.addedItems[this.addedItems.length - 1].quantity * this.addedItems[this.addedItems.length - 1].price;
+                                    this.addedItems[this.addedItems.length - 1].quantity=1;
+                                    this.addedItems[this.addedItems.length - 1].total=this.addedItems[this.addedItems.length - 1].quantity * this.addedItems[this.addedItems.length - 1].price;
                                 //this.calculateTotal(this.addedItems[this.addedItems.length - 1].total);
-                                this.calculateTotal(this.addedItems[this.addedItems.length - 1].total);
+                                    this.calculateTotal(this.addedItems[this.addedItems.length - 1].total);
+                                }
+                                
                             }
                         }
                     },
                     calculateTotal(newTotal){
                         console.log(this.subtotal);
-                        //debugger;
                             this.subtotal = parseInt(this.subtotal) + parseInt(newTotal);
-                            console.log(this.subtotal);
-                            //debugger;
+                           
                     }
+
                 },
                 computed:{
                     grandTotal:function(){
                         this.subtotal = this.total;
-                        console.log(this.subtotal);
                         return this.subtotal;
                     },
                     resultQuery(){
-                        //console.log(this.searchQuery);
                         return this.menus.filter((menu)=>{
                             return menu.name.toLowerCase().match(this.searchQuery.toLowerCase());
                         })
-                        console.log(this.menus);
+                        
                     }
                 }
         	})
