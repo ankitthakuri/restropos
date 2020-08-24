@@ -63,7 +63,7 @@
                     searchQuery:'',
         			total:0,
                     subtotal:0,
-                    vat:null,
+                    vat:0,
                     totalAfterVat:0,
                     menus : [
                     {id:1,name: "Salad", price:150},
@@ -116,14 +116,9 @@
                     },
                     calculateTotal(newTotal){
                         //console.log(this.subtotal);
-                            if(this.vat == null){
-                                this.subtotal = parseInt(this.subtotal) + parseInt(newTotal);
-                            }else{
+                            
                                 this.subtotal = parseInt(this.subtotal) + parseInt(newTotal);
                                 this.calculateVat();
-                            }
-                            
-                           
                     },
                     calculateVat(){
                         vat_amount = this.subtotal * parseFloat(this.vat) / 100;
