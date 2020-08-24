@@ -43,6 +43,14 @@
                                 <td colspan="4">Total</td>
                                 <td>{{subtotal}}</td>
                             </tr>
+                            <tr>
+                                <td colspan="4">Vat</td>
+                                <td><input type="number" name="vat" id="vat" v-model="vat" @keyup="calculateVat()"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">Total After Vat</td>
+                                <td>{{totalAfterVat}}</td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -55,6 +63,8 @@
                     searchQuery:'',
         			total:0,
                     subtotal:0,
+                    vat:null,
+                    totalAfterVat:0,
                     menus : [
                     {id:1,name: "Salad", price:150},
                     {id:2,name: "Sandwich", price: 250},
@@ -62,7 +72,7 @@
                     {id:4,name: "Hot dog", price: 250},
                     {id:5,name: "Pizza", price: 190},
                     {id:6,name: "Ice cream", price: 80},
-                    {id:7,name: "margarine", price: 750},
+                    {id:7,name: "Margarine", price: 750},
                     {id:8,name: "Bacon", price: 320},
                     {id:9,name: "Sour cream", price: 140},
                     {id:10,name: "Ommellete", price: 125},
@@ -105,9 +115,19 @@
                         }
                     },
                     calculateTotal(newTotal){
-                        console.log(this.subtotal);
-                            this.subtotal = parseInt(this.subtotal) + parseInt(newTotal);
+                        //console.log(this.subtotal);
+                            if(this.vat == null){
+                                this.subtotal = parseInt(this.subtotal) + parseInt(newTotal);
+                            }else{
+                                this.subtotal = parseInt(this.subtotal) + parseInt(newTotal);
+                                this.calculateVat();
+                            }
+                            
                            
+                    },
+                    calculateVat(){
+                        vat_amount = this.subtotal * parseFloat(this.vat) / 100;
+                        this.totalAfterVat = this.subtotal + vat_amount;
                     }
 
                 },
